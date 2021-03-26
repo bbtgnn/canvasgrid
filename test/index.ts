@@ -16,7 +16,7 @@ const rp = new paper.Path.Rectangle(r);
 (rp as any).strokeColor = "red";
 
 // Creating grid
-const ug = new UnitGrid(5, 10, 0.5, { column: 1, row: 1 });
+const ug = new UnitGrid(10, 10, 0.5, { column: 0.5, row: 1 });
 
 // Fitting rectange
 const f = r.fitRectangleCenter(ug.ratio);
