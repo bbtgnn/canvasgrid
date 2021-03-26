@@ -1,5 +1,5 @@
 {
-  "name": "canvasgrid",
+  "name": "@bbtgnn/canvasgrid",
   "version": "1.0.0",
   "description": "",
   "main": "index.ts",
