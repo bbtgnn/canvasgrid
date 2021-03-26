@@ -1,0 +1,27 @@
+{
+  "name": "canvasgrid",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "parcel serve ./test/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bbtgnn/canvasgrid.git"
+  },
+  "author": "bbtgnn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bbtgnn/canvasgrid/issues"
+  },
+  "homepage": "https://github.com/bbtgnn/canvasgrid#readme",
+  "devDependencies": {
+    "paper": "^0.12.15",
+    "parcel": "^2.0.0-beta.2"
+  }
+}
