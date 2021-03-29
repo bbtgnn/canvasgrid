@@ -1,1 +1,1 @@
-export { UnitGrid, Size, Rectangle, Cell } from "./classes";
+export { Point, UnitGrid, Size, Rectangle, Cell } from "./classes";

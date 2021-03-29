@@ -1,6 +1,6 @@
 {
   "name": "@bbtgnn/canvasgrid",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Some simple classes to help fit a grid into a canvas with a given size",
   "source": "./src/index.ts",
   "main": "./dist/index.js",
