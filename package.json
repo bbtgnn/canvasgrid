@@ -1,6 +1,6 @@
 {
   "name": "@bbtgnn/canvasgrid",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Some simple classes to help fit a grid into a canvas with a given size",
   "source": "./src/index.ts",
   "main": "./dist/index.js",
@@ -8,7 +8,7 @@
   "module": "./dist/index.module.js",
   "unpkg": "./dist/index.umd.js",
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --no-compress",
     "dev": "microbundle watch"
   },
   "directories": {
