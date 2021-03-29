@@ -1,27 +1,30 @@
 {
   "name": "@bbtgnn/canvasgrid",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
+  "version": "1.0.1",
+  "description": "Some simple classes to help fit a grid into a canvas with a given size",
+  "source": "./src/index.ts",
+  "main": "./dist/index.js",
+  "exports": "./dist/index.modern.js",
+  "module": "./dist/index.module.js",
+  "unpkg": "./dist/index.umd.js",
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch"
+  },
   "directories": {
     "test": "test"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "parcel serve ./test/index.html"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bbtgnn/canvasgrid.git"
   },
-  "author": "bbtgnn",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/bbtgnn/canvasgrid/issues"
   },
   "homepage": "https://github.com/bbtgnn/canvasgrid#readme",
   "devDependencies": {
-    "paper": "^0.12.15",
-    "parcel": "^2.0.0-beta.2"
+    "microbundle": "^0.13.0"
   }
 }
