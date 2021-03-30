@@ -3,7 +3,9 @@ export declare class Point {
     y: number;
     constructor(x: number, y: number);
     add(point: Point): Point;
+    sub(point: Point): Point;
     smult(value: number): Point;
+    vmult(point: Point): Point;
     vscale(scale: Point, origin?: Point): Point;
     sscale(scale: number, origin?: Point): Point;
 }
@@ -13,6 +15,7 @@ export declare class Size {
     constructor(width: number, height: number);
     get ratio(): number;
     fitSize(ratio: number): Size;
+    fillSize(ratio: number): Size;
 }
 export declare class Rectangle {
     origin: Point;

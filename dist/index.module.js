@@ -1,3 +1,46 @@
+var Point = /*#__PURE__*/function () {
+  function Point(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  var _proto = Point.prototype;
+
+  _proto.add = function add(point) {
+    return new Point(this.x + point.x, this.y + point.y);
+  };
+
+  _proto.sub = function sub(point) {
+    return new Point(this.x - point.x, this.y - point.y);
+  };
+
+  _proto.smult = function smult(value) {
+    return new Point(this.x * value, this.y * value);
+  };
+
+  _proto.vmult = function vmult(point) {
+    return new Point(this.x * point.x, this.y * point.y);
+  };
+
+  _proto.vscale = function vscale(scale, origin) {
+    if (origin === void 0) {
+      origin = new Point(0, 0);
+    }
+
+    return origin.add(this.sub(origin).vmult(scale));
+  };
+
+  _proto.sscale = function sscale(scale, origin) {
+    if (origin === void 0) {
+      origin = new Point(0, 0);
+    }
+
+    return this.vscale(new Point(scale, scale), origin);
+  };
+
+  return Point;
+}();
+
 function _defineProperties(target, props) {
   for (var i = 0; i < props.length; i++) {
     var descriptor = props[i];
@@ -30,58 +73,26 @@ function _setPrototypeOf(o, p) {
   return _setPrototypeOf(o, p);
 }
 
-function round(v, d) {
-  if (d === void 0) {
-    d = 2;
-  }
-
-  var p = Math.pow(10, d);
-  return Math.round(v * p) / p;
-}
-
-var Point = /*#__PURE__*/function () {
-  function Point(x, y) {
-    this.x = round(x);
-    this.y = round(y);
-  }
-
-  var _proto = Point.prototype;
-
-  _proto.add = function add(point) {
-    return new Point(this.x + point.x, this.y + point.y);
-  };
-
-  _proto.smult = function smult(value) {
-    return new Point(this.x * value, this.y * value);
-  };
-
-  _proto.vscale = function vscale(scale, origin) {
-    if (origin === void 0) {
-      origin = new Point(0, 0);
-    }
-
-    return new Point(origin.x + (this.x - origin.x) * scale.x, origin.y + (this.y - origin.y) * scale.y);
-  };
-
-  _proto.sscale = function sscale(scale, origin) {
-    if (origin === void 0) {
-      origin = new Point(0, 0);
-    }
-
-    return this.vscale(new Point(scale, scale), origin);
-  };
-
-  return Point;
-}();
 var Size = /*#__PURE__*/function () {
   function Size(width, height) {
-    this.width = round(width);
-    this.height = round(height);
+    this.width = width;
+    this.height = height;
   }
+  /**
+   * Getters
+   */
 
-  var _proto2 = Size.prototype;
 
-  _proto2.fitSize = function fitSize(ratio) {
+  var _proto = Size.prototype;
+
+  /**
+   * Methods
+   */
+  _proto.sscale = function sscale(value) {
+    return new Size(this.width * value, this.height * value);
+  };
+
+  _proto.fitSize = function fitSize(ratio) {
     var width;
     var height; //
 
@@ -97,6 +108,22 @@ var Size = /*#__PURE__*/function () {
     return new Size(width, height);
   };
 
+  _proto.fillSize = function fillSize(ratio) {
+    var width;
+    var height; //
+
+    if (this.ratio > ratio) {
+      width = this.width;
+      height = width / ratio;
+    } //
+    else {
+        height = this.height;
+        width = height * ratio;
+      }
+
+    return new Size(width, height);
+  };
+
   _createClass(Size, [{
     key: "ratio",
     get: function get() {
@@ -106,28 +133,44 @@ var Size = /*#__PURE__*/function () {
 
   return Size;
 }();
+
 var Rectangle = /*#__PURE__*/function () {
   function Rectangle(origin, size) {
     this.origin = origin;
     this.size = size;
-  } // Simple shortcuts
+  }
+  /**
+   * Getters
+   */
 
 
-  var _proto3 = Rectangle.prototype;
+  var _proto = Rectangle.prototype;
 
-  //
-  _proto3.translate = function translate(vector) {
+  /**
+   * Methods
+   */
+  _proto.translate = function translate(vector) {
     return new Rectangle(this.origin.add(vector), this.size);
   };
 
-  _proto3.fitRectangleCenter = function fitRectangleCenter(ratio) {
-    // Getting the base size
-    var size = this.size.fitSize(ratio); // Then we calculate its new x & y
-
+  _proto.centerSize = function centerSize(size) {
     var x = this.origin.x + (this.width - size.width) / 2;
-    var y = this.origin.y + (this.height - size.height) / 2; //
+    var y = this.origin.y + (this.height - size.height) / 2;
+    return new Point(x, y);
+  };
 
-    return new Rectangle(new Point(x, y), size);
+  _proto.fitRectangleCenter = function fitRectangleCenter(ratio) {
+    // Getting the base size
+    var size = this.size.fitSize(ratio); //
+
+    return new Rectangle(this.centerSize(size), size);
+  };
+
+  _proto.fillRectangleCenter = function fillRectangleCenter(ratio) {
+    // Getting base size
+    var size = this.size.fillSize(ratio); //
+
+    return new Rectangle(this.centerSize(size), size);
   };
 
   _createClass(Rectangle, [{
@@ -159,6 +202,7 @@ var Rectangle = /*#__PURE__*/function () {
 
   return Rectangle;
 }();
+
 var Cell = /*#__PURE__*/function (_Rectangle) {
   _inheritsLoose(Cell, _Rectangle);
 
@@ -169,6 +213,10 @@ var Cell = /*#__PURE__*/function (_Rectangle) {
     _this.index = index;
     return _this;
   }
+  /**
+   * Getters
+   */
+
 
   _createClass(Cell, [{
     key: "i",
@@ -184,12 +232,9 @@ var Cell = /*#__PURE__*/function (_Rectangle) {
 
   return Cell;
 }(Rectangle);
-var UnitGrid = /*#__PURE__*/function () {
-  function UnitGrid(rows, columns, cell_ratio, spacing) {
-    if (cell_ratio === void 0) {
-      cell_ratio = 1;
-    }
 
+var Grid = /*#__PURE__*/function () {
+  function Grid(rows, columns, cell, spacing, origin) {
     if (spacing === void 0) {
       spacing = {
         column: 0,
@@ -197,40 +242,47 @@ var UnitGrid = /*#__PURE__*/function () {
       };
     }
 
+    if (origin === void 0) {
+      origin = new Point(0, 0);
+    }
+
     this.rows = rows;
     this.columns = columns;
-    this.cell_ratio = cell_ratio;
+    this.cell = cell;
     this.spacing = spacing;
+    this.origin = origin;
   }
+  /**
+   * Getters
+   */
 
-  var _proto4 = UnitGrid.prototype;
 
-  _proto4.getCellHeightFromGridHeight = function getCellHeightFromGridHeight(height) {
-    return height / this.height;
-  };
+  var _proto = Grid.prototype;
 
-  _proto4.getCellHeightFromGridWidth = function getCellHeightFromGridWidth(width) {
-    return width / this.width;
-  };
+  _proto.setOrigin = function setOrigin(point) {
+    this.origin = point;
+    return this;
+  }
+  /**
+   * Methods
+   */
+  ;
 
-  _proto4.getCells = function getCells(cell_height, translation) {
-    if (cell_height === void 0) {
-      cell_height = 1;
+  _proto.getCells = function getCells(origin) {
+    if (origin === void 0) {
+      origin = this.origin;
     }
 
-    if (translation === void 0) {
-      translation = new Point(0, 0);
-    }
-
-    var cells = [];
+    // Array contaning all cells
+    var cells = []; // Iterating over rows
 
     for (var r = 0; r < this.rows; r++) {
-      var y = r * (1 + this.spacing.row);
+      var y = origin.y + r * (this.cell.height + this.spacing.row); // Iterating over columns
 
       for (var c = 0; c < this.columns; c++) {
-        var x = c * (this.cell_ratio + this.spacing.column);
-        var origin = new Point(x, y).sscale(cell_height).add(translation);
-        cells.push(new Cell(origin, new Size(cell_height * this.cell_ratio, cell_height), {
+        var x = origin.x + c * (this.cell.width + this.spacing.column); // Adding new cell
+
+        cells.push(new Cell(new Point(x, y), this.cell, {
           i: r,
           j: c
         }));
@@ -240,23 +292,31 @@ var UnitGrid = /*#__PURE__*/function () {
     return cells;
   };
 
-  _createClass(UnitGrid, [{
+  _proto.fillHeight = function fillHeight(height) {
+    var f = height / this.height;
+    return new Grid(this.rows, this.columns, this.cell.sscale(f), {
+      column: this.spacing.column * f,
+      row: this.spacing.row * f
+    });
+  };
+
+  _proto.fillWidth = function fillWidth(width) {
+    var f = width / this.width;
+    return new Grid(this.rows, this.columns, this.cell.sscale(f), {
+      column: this.spacing.column * f,
+      row: this.spacing.row * f
+    });
+  };
+
+  _createClass(Grid, [{
     key: "height",
     get: function get() {
-      /**
-       * number of cells in a column   * cell height +
-       * number of gaps between colums * gap height
-       */
-      return this.rows * 1 + (this.rows - 1) * this.spacing.row;
+      return this.rows * this.cell.height + (this.rows - 1) * this.spacing.row;
     }
   }, {
     key: "width",
     get: function get() {
-      /**
-       * number of cell in row        * cell width +
-       * number of gaps between rows  * gap width
-       */
-      return this.columns * this.cell_ratio + (this.columns - 1) * this.spacing.column;
+      return this.columns * this.cell.width + (this.columns - 1) * this.spacing.column;
     }
   }, {
     key: "ratio",
@@ -265,8 +325,28 @@ var UnitGrid = /*#__PURE__*/function () {
     }
   }]);
 
-  return UnitGrid;
+  return Grid;
 }();
 
-export { Cell, Point, Rectangle, Size, UnitGrid };
+function getCanvasGrid(mode, canvas, grid) {
+  // Creating canvas rectangle
+  var canvasRect = new Rectangle(new Point(canvas.x, canvas.y), new Size(canvas.width, canvas.height)); // Creating unit grid
+
+  var unitGrid = new Grid(grid.rows, grid.columns, new Size(grid.cell_ratio, 1), grid.spacing); // Creating grid rectangle
+
+  var gridRect;
+
+  if (mode == "fill") {
+    gridRect = canvasRect.fillRectangleCenter(unitGrid.ratio);
+  } else {
+    gridRect = canvasRect.fitRectangleCenter(unitGrid.ratio);
+  } // Setting origin
+
+
+  var origin = canvasRect.origin.add(gridRect.origin); // Scaling grid
+
+  return unitGrid.fillHeight(gridRect.height).setOrigin(origin);
+}
+
+export { Cell, Grid, Point, Rectangle, Size, getCanvasGrid };
 //# sourceMappingURL=index.module.js.map
