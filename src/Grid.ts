@@ -1,6 +1,7 @@
 import Point from "./Point";
 import Size from "./Size";
 import Cell from "./Cell";
+import Rectangle from "./Rectangle";
 
 export default class Grid {
   rows: number;
@@ -43,8 +44,16 @@ export default class Grid {
     );
   }
 
+  get size(): Size {
+    return new Size(this.width, this.height);
+  }
+
   get ratio(): number {
-    return this.width / this.height;
+    return this.size.ratio;
+  }
+
+  get rectangle(): Rectangle {
+    return new Rectangle(this.origin, this.size);
   }
 
   setOrigin(point: Point): Grid {

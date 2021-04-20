@@ -1,6 +1,7 @@
 import Point from "./Point";
 import Size from "./Size";
 import Cell from "./Cell";
+import Rectangle from "./Rectangle";
 export default class Grid {
     rows: number;
     columns: number;
@@ -19,7 +20,9 @@ export default class Grid {
      */
     get height(): number;
     get width(): number;
+    get size(): Size;
     get ratio(): number;
+    get rectangle(): Rectangle;
     setOrigin(point: Point): Grid;
     /**
      * Methods

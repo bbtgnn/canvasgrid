@@ -194,8 +194,16 @@ class Grid {
     return this.columns * this.cell.width + (this.columns - 1) * this.spacing.column;
   }
 
+  get size() {
+    return new Size(this.width, this.height);
+  }
+
   get ratio() {
-    return this.width / this.height;
+    return this.size.ratio;
+  }
+
+  get rectangle() {
+    return new Rectangle(this.origin, this.size);
   }
 
   setOrigin(point) {

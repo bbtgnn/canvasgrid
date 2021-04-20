@@ -324,9 +324,19 @@ var Grid = /*#__PURE__*/function () {
       return this.columns * this.cell.width + (this.columns - 1) * this.spacing.column;
     }
   }, {
+    key: "size",
+    get: function get() {
+      return new Size(this.width, this.height);
+    }
+  }, {
     key: "ratio",
     get: function get() {
-      return this.width / this.height;
+      return this.size.ratio;
+    }
+  }, {
+    key: "rectangle",
+    get: function get() {
+      return new Rectangle(this.origin, this.size);
     }
   }]);
 
