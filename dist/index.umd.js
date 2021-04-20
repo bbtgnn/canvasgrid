@@ -203,6 +203,11 @@
       get: function get() {
         return this.size.ratio;
       }
+    }, {
+      key: "center",
+      get: function get() {
+        return this.origin.add(new Point(this.width / 2, this.height / 2));
+      }
     }]);
 
     return Rectangle;

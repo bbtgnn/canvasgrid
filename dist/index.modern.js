@@ -115,6 +115,10 @@ class Rectangle {
   get ratio() {
     return this.size.ratio;
   }
+
+  get center() {
+    return this.origin.add(new Point(this.width / 2, this.height / 2));
+  }
   /**
    * Methods
    */

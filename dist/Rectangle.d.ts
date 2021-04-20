@@ -12,6 +12,7 @@ export default class Rectangle {
     get width(): number;
     get height(): number;
     get ratio(): number;
+    get center(): Point;
     /**
      * Methods
      */
